@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>E-Commerce Demo App</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 0; background: #f7f7f7; color: #222; }
+        header { background: #111827; color: white; padding: 16px 24px; }
+        main { max-width: 1200px; margin: 0 auto; padding: 24px; }
+        .card { background: white; border-radius: 12px; padding: 18px; margin-bottom: 18px; box-shadow: 0 2px 10px rgba(0,0,0,0.08); }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; }
+        .product-card { border: 1px solid #e5e7eb; border-radius: 12px; padding: 14px; background: #fff; }
+        .hidden { display: none; }
+        label { display: block; margin-top: 10px; }
+        input, select, button {
+            width: 100%; box-sizing: border-box; padding: 10px 12px; margin-top: 6px;
+            border: 1px solid #cbd5e1; border-radius: 10px; font-size: 14px;
+        }
+        button { cursor: pointer; background: #2563eb; color: white; border: none; }
+        button.secondary { background: #475569; }
+        button.danger { background: #dc2626; }
+        button.success { background: #059669; }
+        .row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 10px; border-bottom: 1px solid #e5e7eb; text-align: left; }
+        .status { padding: 12px; border-radius: 10px; background: #ecfeff; color: #155e75; font-weight: 600; }
+        .error { color: #b91c1c; margin-top: 8px; }
+        .muted { color: #6b7280; }
+        .toolbar { display: grid; grid-template-columns: 1.5fr 1fr auto; gap: 12px; align-items: end; }
+        .actions { display: flex; gap: 8px; flex-wrap: wrap; }
+        .actions button { width: auto; min-width: 160px; }
+    </style>
+</head>
+<body>
+<header>
+    <strong>E-Commerce Demo App</strong>
+    <span style="margin-left: 12px; color: #93c5fd;">Selenium practice flow</span>
+</header>
+
+<main>
+    <section id="loginSection" class="card">
+        <h2>Login</h2>
+        <p class="muted">Use the Excel credentials provided with this project.</p>
+        <div class="row">
+            <div>
+                <label for="username">Username</label>
+                <input id="username" type="text" />
+            </div>
+            <div>
+                <label for="password">Password</label>
+                <input id="password" type="password" />
+            </div>
+        </div>
+        <div class="actions" style="margin-top: 14px;">
+            <button id="loginBtn" type="button">Login</button>
+        </div>
+        <div id="loginError" class="error"></div>
+    </section>
+
+    <section id="appSection" class="hidden">
+        <div class="card">
+            <h2>Welcome, <span id="loggedInUser"></span></h2>
+            <p class="muted">Search, filter, add to cart, remove, checkout, and logout from this single-page demo.</p>
+            <div class="toolbar">
+                <div>
+                    <label for="searchBox">Search Product</label>
+                    <input id="searchBox" type="text" placeholder="Type product name..." />
+                </div>
+                <div>
+                    <label for="filterDropdown">Filter</label>
+                    <select id="filterDropdown">
+                        <option value="All">All</option>
+                        <option value="Electronics">Electronics</option>
+                        <option value="Fashion">Fashion</option>
+                        <option value="Home">Home</option>
+                    </select>
+                </div>
+                <div>
+                    <button id="searchBtn" type="button">Search</button>
+                </div>
+            </div>
+            <div style="margin-top: 14px;" class="actions">
+                <button id="logoutBtn" type="button" class="secondary">Logout</button>
+            </div>
+        </div>
+
+        <section class="card">
+            <h2>Products</h2>
+            <div id="products" class="grid">
+                <div class="product-card" data-name="Shoes" data-category="Fashion" data-price="60">
+                    <div data-col="name"><strong>Shoes</strong></div>
+                    <div data-col="category" class="muted">Fashion</div>
+                    <div data-col="price">$60.00</div>
+                    <button data-action="add-to-cart" type="button">Add to Cart</button>
+                </div>
+                <div class="product-card" data-name="Laptop" data-category="Electronics" data-price="700">
+                    <div data-col="name"><strong>Laptop</strong></div>
+                    <div data-col="category" class="muted">Electronics</div>
+                    <div data-col="price">$700.00</div>
+                    <button data-action="add-to-cart" type="button">Add to Cart</button>
+                </div>
+                <div class="product-card" data-name="Headphones" data-category="Electronics" data-price="120">
+                    <div data-col="name"><strong>Headphones</strong></div>
+                    <div data-col="category" class="muted">Electronics</div>
+                    <div data-col="price">$120.00</div>
+                    <button data-action="add-to-cart" type="button">Add to Cart</button>
+                </div>
+                <div class="product-card" data-name="T-Shirt" data-category="Fashion" data-price="25">
+                    <div data-col="name"><strong>T-Shirt</strong></div>
+                    <div data-col="category" class="muted">Fashion</div>
+                    <div data-col="price">$25.00</div>
+                    <button data-action="add-to-cart" type="button">Add to Cart</button>
+                </div>
+                <div class="product-card" data-name="Mixer" data-category="Home" data-price="90">
+                    <div data-col="name"><strong>Mixer</strong></div>
+                    <div data-col="category" class="muted">Home</div>
+                    <div data-col="price">$90.00</div>
+                    <button data-action="add-to-cart" type="button">Add to Cart</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="cartSection" class="card">
+            <h2>Cart</h2>
+            <table id="cartTable">
+                <thead>
+                    <tr>
+                        <th>Product</th>
+                        <th>Category</th>
+                        <th>Price</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+            <p id="cartTotal" style="font-size: 18px; font-weight: 700; margin-top: 12px;">Total: $0.00</p>
+            <div class="actions">
+                <button id="checkoutBtn" type="button" class="success">Proceed to Checkout</button>
+            </div>
+            <div id="checkoutStatus" class="status" style="margin-top: 12px;">Checkout not started.</div>
+        </section>
+    </section>
+</main>
+
+<script>
+    const validUsers = [
+        { username: 'demo1@example.com', password: 'demo1pass', displayName: 'Demo User One' },
+        { username: 'demo2@example.com', password: 'demo2pass', displayName: 'Demo User Two' }
+    ];
+
+    const state = {
+        loggedIn: false,
+        user: null,
+        cart: []
+    };
+
+    const els = {
+        loginSection: document.getElementById('loginSection'),
+        appSection: document.getElementById('appSection'),
+        username: document.getElementById('username'),
+        password: document.getElementById('password'),
+        loginBtn: document.getElementById('loginBtn'),
+        loginError: document.getElementById('loginError'),
+        loggedInUser: document.getElementById('loggedInUser'),
+        searchBox: document.getElementById('searchBox'),
+        searchBtn: document.getElementById('searchBtn'),
+        filterDropdown: document.getElementById('filterDropdown'),
+        logoutBtn: document.getElementById('logoutBtn'),
+        productCards: Array.from(document.querySelectorAll('.product-card')),
+        cartBody: document.querySelector('#cartTable tbody'),
+        cartTotal: document.getElementById('cartTotal'),
+        checkoutBtn: document.getElementById('checkoutBtn'),
+        checkoutStatus: document.getElementById('checkoutStatus'),
+    };
+
+    function renderProducts() {
+        const search = els.searchBox.value.trim().toLowerCase();
+        const filter = els.filterDropdown.value;
+        els.productCards.forEach(card => {
+            const name = card.dataset.name.toLowerCase();
+            const category = card.dataset.category;
+            const matchesSearch = !search || name.includes(search);
+            const matchesFilter = filter === 'All' || category === filter;
+            card.classList.toggle('hidden', !(matchesSearch && matchesFilter));
+        });
+    }
+
+    function getVisibleProductCards() {
+        return els.productCards.filter(card => !card.classList.contains('hidden'));
+    }
+
+    function renderCart() {
+        els.cartBody.innerHTML = '';
+        state.cart.forEach((item, index) => {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td>${item.name}</td>
+                <td>${item.category}</td>
+                <td data-col="price">$${item.price.toFixed(2)}</td>
+                <td><button data-action="remove" data-index="${index}" type="button" class="danger">Remove</button></td>
+            `;
+            els.cartBody.appendChild(tr);
+        });
+        const total = state.cart.reduce((sum, item) => sum + item.price, 0);
+        els.cartTotal.textContent = `Total: $${total.toFixed(2)}`;
+    }
+
+    function findUser(username, password) {
+        return validUsers.find(user => user.username === username && user.password === password);
+    }
+
+    function login() {
+        const user = findUser(els.username.value.trim(), els.password.value.trim());
+        if (!user) {
+            els.loginError.textContent = 'Invalid username or password';
+            return;
+        }
+        els.loginError.textContent = '';
+        state.loggedIn = true;
+        state.user = user;
+        els.loggedInUser.textContent = user.displayName;
+        els.loginSection.classList.add('hidden');
+        els.appSection.classList.remove('hidden');
+        els.checkoutStatus.textContent = 'Checkout not started.';
+        renderProducts();
+        renderCart();
+    }
+
+    function addToCart(name) {
+        const card = els.productCards.find(p => p.dataset.name === name);
+        if (!card) return;
+        state.cart.push({
+            name: card.dataset.name,
+            category: card.dataset.category,
+            price: Number(card.dataset.price)
+        });
+        renderCart();
+    }
+
+    function checkout() {
+        if (!state.cart.length) {
+            els.checkoutStatus.textContent = 'Cart is empty.';
+            return;
+        }
+        els.checkoutStatus.textContent = 'Checkout completed successfully!';
+    }
+
+    function logout() {
+        state.loggedIn = false;
+        state.user = null;
+        state.cart = [];
+        els.username.value = '';
+        els.password.value = '';
+        els.searchBox.value = '';
+        els.filterDropdown.value = 'All';
+        els.loginSection.classList.remove('hidden');
+        els.appSection.classList.add('hidden');
+        els.loginError.textContent = '';
+        renderProducts();
+        renderCart();
+    }
+
+    document.getElementById('loginBtn').addEventListener('click', login);
+    document.getElementById('searchBtn').addEventListener('click', renderProducts);
+    document.getElementById('filterDropdown').addEventListener('change', renderProducts);
+    document.getElementById('logoutBtn').addEventListener('click', logout);
+    document.getElementById('checkoutBtn').addEventListener('click', checkout);
+    document.getElementById('products').addEventListener('click', (event) => {
+        const btn = event.target.closest('button[data-action="add-to-cart"]');
+        if (!btn) return;
+        const card = btn.closest('.product-card');
+        addToCart(card.dataset.name);
+    });
+    document.querySelector('#cartTable tbody').addEventListener('click', (event) => {
+        const btn = event.target.closest('button[data-action="remove"]');
+        if (!btn) return;
+        const index = Number(btn.dataset.index);
+        state.cart.splice(index, 1);
+        renderCart();
+    });
+
+    renderProducts();
+    renderCart();
+</script>
+</body>
+</html>
